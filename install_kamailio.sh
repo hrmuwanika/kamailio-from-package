@@ -106,4 +106,10 @@ systemctl reload apache2
 
 mysql -u root -p --execute="GRANT ALL PRIVILEGES ON siremis.* TO siremis@localhost IDENTIFIED BY '8)Le5~#C'; FLUSH PRIVILEGES;"
 
+#------------------------------------------------------
+# Install Letsencrypt
+#------------------------------------------------------
+sudo apt install -y certbot python-certbot-apache
+sudo certbot --apache
+
 echo -e "Access siremis on http://ipaddress/siremis/install"

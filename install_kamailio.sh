@@ -62,7 +62,6 @@ sed -i -e '6i#!define WITH_ANTIFLOOD\' /etc/kamailio/kamailio.cfg
 
 systemctl enable kamailio
 systemctl start kamailio
-systemctl status kamailio
 
 #----------------------------------------------------
 # Siremis installation

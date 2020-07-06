@@ -58,9 +58,11 @@ sudo kamdbctl create
 
 sed -i -e '2i#!define WITH_MYSQL\' /etc/kamailio/kamailio.cfg
 sed -i -e '3i#!define WITH_AUTH\' /etc/kamailio/kamailio.cfg
-sed -i -e '4i#!define WITH_USRLOCDB\' /etc/kamailio/kamailio.cfg
-sed -i -e '5i#!define WITH_NAT\' /etc/kamailio/kamailio.cfg
-sed -i -e '6i#!define WITH_ANTIFLOOD\' /etc/kamailio/kamailio.cfg
+sed -i -e '4i#!define WITH_IPAUTH\' /etc/kamailio/kamailio.cfg
+sed -i -e '5i#!define WITH_USRLOCDB\' /etc/kamailio/kamailio.cfg
+sed -i -e '6i#!define WITH_MULTIDOMAIN\' /etc/kamailio/kamailio.cfg
+sed -i -e '7i#!define WITH_NAT\' /etc/kamailio/kamailio.cfg
+sed -i -e '8i#!define WITH_ANTIFLOOD\' /etc/kamailio/kamailio.cfg
 
 systemctl enable kamailio
 systemctl start kamailio

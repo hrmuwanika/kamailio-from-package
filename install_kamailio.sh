@@ -27,7 +27,7 @@ sudo systemctl start mariadb
 
 mysql_secure_installation
 
-sudo apt install -y vim git 
+sudo apt install -y vim git make wget
 echo "set mouse-=a" >> ~/.vimrc
 
 #-----------------------------------------------

@@ -42,6 +42,7 @@ deb-src http://deb.kamailio.org/kamailio53 buster main
 EOF
 
 sudo apt update
+sudo apt upgrade -y
 sudo apt install kamailio kamailio-mysql-modules
 sudo apt install kamailio-websocket-modules kamailio-tls-modules
 

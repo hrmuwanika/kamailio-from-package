@@ -33,6 +33,7 @@ echo "set mouse-=a" >> ~/.vimrc
 #-----------------------------------------------
 # Kamailio repository
 #-----------------------------------------------
+sudo apt install -y gnupg gnupg1 gnupg2
 wget -O- http://deb.kamailio.org/kamailiodebkey.gpg | sudo apt-key add -
 
 sudo tee /etc/apt/sources.list.d/kamailio.list<<EOF

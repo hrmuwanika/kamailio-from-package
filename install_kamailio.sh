@@ -81,7 +81,6 @@ sudo sed -i s/"upload_max_filesize = 2M"/"upload_max_filesize = 150M"/g /etc/php
 sudo sed -i s/"max_execution_time = 30"/"max_execution_time = 360"/g /etc/php/7.3/apache2/php.ini
 
 cd /usr/src
-sudo pear install XML_RPC2
 wget http://pear.php.net/get/XML_RPC-1.5.5.tgz
 pear upgrade XML_RPC-1.5.5.tgz
 

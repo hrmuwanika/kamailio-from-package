@@ -52,7 +52,7 @@ sed -i 's/# DBRWUSER="kamailio"/DBRWUSER="kamailio"/g' /etc/kamailio/kamctlrc
 sed -i 's/# DBRWPW="kamailiorw"/DBRWPW="8)Le5~#C"/g' /etc/kamailio/kamctlrc
 sed -i 's/#CHARSET="latin1"/CHARSET="latin1"/g' /etc/kamailio/kamctlrc
 
-sudo /usr/local/sbin/kamdbctl create
+sudo kamdbctl create
 
 sed -i -e '2i#!define WITH_MYSQL\' /etc/kamailio/kamailio.cfg
 sed -i -e '3i#!define WITH_AUTH\' /etc/kamailio/kamailio.cfg

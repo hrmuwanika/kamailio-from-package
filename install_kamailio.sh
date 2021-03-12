@@ -111,7 +111,11 @@ mysql -u root -p --execute="GRANT ALL PRIVILEGES ON siremis.* TO siremis@localho
 #------------------------------------------------------
 # Install Letsencrypt
 #------------------------------------------------------
-sudo apt install -y certbot python-certbot-apache
-sudo certbot --apache
+sudo apt install snapd -y
+sudo snap install core
+sudo snap refresh core
+sudo snap install --classic certbot
+sudo ln -s /snap/bin/certbot /usr/bin/certbot
+sudo certbot --apache -d vps.rw -d www.vps.rw
 
 echo -e "Access siremis on http://ipaddress/siremis/install"

@@ -22,31 +22,30 @@ sudo apt autoremove -y
 # Install dependencies
 #--------------------------------------------------
 echo -e "\n============= Install dependencies ================"
-sudo apt install -y mariadb-server mariadb-client
+sudo apt install -y gnupg2 mariadb-server curl unzip wget git make git
 
 sudo systemctl enable mariadb
 sudo systemctl start mariadb
 
 mysql_secure_installation
 
-sudo apt install -y vim git make wget
+sudo apt install -y vim
 echo "set mouse-=a" >> ~/.vimrc
 
 #-----------------------------------------------
 # Kamailio repository
 #-----------------------------------------------
-sudo apt install -y gnupg gnupg1 gnupg2
 wget -O- http://deb.kamailio.org/kamailiodebkey.gpg | sudo apt-key add -
 
 sudo tee /etc/apt/sources.list.d/kamailio.list<<EOF
+deb http://cz.archive.ubuntu.com/ubuntu bionic main
 deb http://deb.kamailio.org/kamailio53 buster main
 deb-src http://deb.kamailio.org/kamailio53 buster main
 EOF
 
 sudo apt update
 sudo apt upgrade -y
-sudo apt install kamailio kamailio-mysql-modules
-sudo apt install kamailio-websocket-modules kamailio-tls-modules
+sudo apt install -y kamailio kamailio-mysql-modules kamailio-websocket-modules kamailio-tls-modules
 
 sed -i 's/# SIP_DOMAIN=kamailio.org/SIP_DOMAIN=vps.rw/g' /etc/kamailio/kamctlrc
 sed -i 's/# DBENGINE=MYSQL/DBENGINE=MYSQL/g' /etc/kamailio/kamctlrc

@@ -4,7 +4,6 @@
 IPTABLES="/sbin/iptables"
 IP6TABLES="/sbin/ip6tables"
 RTP="16384:16485"
-TURN="49152:65535"
 
 #Flush tables
 $IPTABLES -F
@@ -45,39 +44,19 @@ $IP6TABLES -A INPUT -i lo -j ACCEPT
 $IPTABLES -A INPUT -p tcp --dport 5061 -j ACCEPT
 $IPTABLES -A INPUT -p tcp --dport 5060 -j ACCEPT
 $IPTABLES -A INPUT -p udp --dport 5060 -j ACCEPT
-$IPTABLES -A INPUT -p tcp --dport 4443 -j ACCEPT
-$IPTABLES -A INPUT -p tcp --dport 8080 -j ACCEPT
 $IP6TABLES -A INPUT -p tcp --dport 5061 -j ACCEPT
 $IP6TABLES -A INPUT -p tcp --dport 5060 -j ACCEPT
 $IP6TABLES -A INPUT -p udp --dport 5060 -j ACCEPT
-$IP6TABLES -A INPUT -p tcp --dport 4443 -j ACCEPT
-$IP6TABLES -A INPUT -p tcp --dport 8080 -j ACCEPT
 
 # HTTP (load + web)
 $IPTABLES -A INPUT -p tcp --dport 80 -j ACCEPT
 $IPTABLES -A INPUT -p tcp --dport 443 -j ACCEPT
-$IPTABLES -A INPUT -p tcp --dport 3443 -j ACCEPT
-$IPTABLES -A INPUT -p tcp --dport 3480 -j ACCEPT
 $IP6TABLES -A INPUT -p tcp --dport 80 -j ACCEPT
 $IP6TABLES -A INPUT -p tcp --dport 443 -j ACCEPT
-$IP6TABLES -A INPUT -p tcp --dport 3443 -j ACCEPT
-$IP6TABLES -A INPUT -p tcp --dport 3480 -j ACCEPT
-
-# TURN
-$IPTABLES -A INPUT -p udp --dport 3478 -j ACCEPT
-$IPTABLES -A INPUT -p tcp --dport 3478 -j ACCEPT
-$IPTABLES -A INPUT -p tcp --dport 3479 -j ACCEPT
-$IP6TABLES -A INPUT -p udp --dport 3478 -j ACCEPT
-$IP6TABLES -A INPUT -p tcp --dport 3478 -j ACCEPT
-$IP6TABLES -A INPUT -p tcp --dport 3479 -j ACCEPT
 
 # RTPEngine
 $IPTABLES -I INPUT -p udp -j RTPENGINE --dport $RTP --id 0
 $IP6TABLES -I INPUT -p udp -j RTPENGINE --dport $RTP --id 0
-
-# Allow TURN RTP
-$IPTABLES -I INPUT -p udp --dport $TURN -j ACCEPT
-$IP6TABLES -I INPUT -p udp --dport $TURN -j ACCEPT
 
 # Brute-force block
 $IPTABLES -A INPUT -p tcp -m tcp --dport 22 -m state --state NEW -m recent --set --name DEFAULT --rsource

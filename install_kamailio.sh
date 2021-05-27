@@ -22,10 +22,10 @@ sudo apt autoremove -y
 # Install dependencies
 #--------------------------------------------------
 echo -e "\n============= Install dependencies ================"
-sudo apt install -y gnupg2 mariadb-server curl unzip wget git make git
+sudo apt install -y gnupg2 default-mysql-server curl unzip wget git make git
 
-sudo systemctl enable mariadb
-sudo systemctl start mariadb
+sudo systemctl enable mysql.service
+sudo systemctl start mysql.service
 
 mysql_secure_installation
 
@@ -38,9 +38,8 @@ echo "set mouse-=a" >> ~/.vimrc
 wget -O- http://deb.kamailio.org/kamailiodebkey.gpg | sudo apt-key add -
 
 sudo tee /etc/apt/sources.list.d/kamailio.list<<EOF
-deb http://cz.archive.ubuntu.com/ubuntu bionic main
-deb http://deb.kamailio.org/kamailio53 buster main
-deb-src http://deb.kamailio.org/kamailio53 buster main
+deb http://deb.kamailio.org/kamailio55 buster main
+deb-src http://deb.kamailio.org/kamailio55 buster main
 EOF
 
 sudo apt update

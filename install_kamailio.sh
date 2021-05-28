@@ -52,7 +52,7 @@ EOF
 
 sudo apt update
 sudo apt upgrade -y
-sudo apt install -y kamailio kamailio-mysql-modules kamailio-websocket-modules kamailio-tls-modules
+sudo apt install -y kamailio kamailio-mysql-modules kamailio-websocket-modules kamailio-tls-modules kamailio-presence-modules
 
 sed -i 's/# SIP_DOMAIN=kamailio.org/SIP_DOMAIN=vps.rw/g' /etc/kamailio/kamctlrc
 sed -i 's/# DBENGINE=MYSQL/DBENGINE=MYSQL/g' /etc/kamailio/kamctlrc

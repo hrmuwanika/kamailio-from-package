@@ -22,7 +22,7 @@ sudo apt autoremove -y
 # Firewall rules
 #----------------------------------------------------
 sudo apt install  -y iptables iptables-persistent
-wget https://raw.githubusercontent.com/hrmuwanika/kamailio-from-source/master/iptables.sh
+wget https://raw.githubusercontent.com/hrmuwanika/kamailio-from-package/master/iptables.sh
 chmod +x iptables.sh
 ./iptables.sh
 

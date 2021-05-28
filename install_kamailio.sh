@@ -62,7 +62,8 @@ sed -i -e '4i#!define WITH_IPAUTH\' /etc/kamailio/kamailio.cfg
 sed -i -e '5i#!define WITH_USRLOCDB\' /etc/kamailio/kamailio.cfg
 sed -i -e '6i#!define WITH_MULTIDOMAIN\' /etc/kamailio/kamailio.cfg
 sed -i -e '7i#!define WITH_NAT\' /etc/kamailio/kamailio.cfg
-sed -i -e '8i#!define WITH_ANTIFLOOD\' /etc/kamailio/kamailio.cfg
+sed -i -e '8i#!define WITH_RTPENGINE\' /etc/kamailio/kamailio.cfg
+sed -i -e '9i#!define WITH_ANTIFLOOD\' /etc/kamailio/kamailio.cfg
 
 systemctl enable kamailio
 systemctl start kamailio

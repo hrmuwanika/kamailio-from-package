@@ -18,14 +18,22 @@ sudo apt update
 sudo apt upgrade -y
 sudo apt autoremove -y
 
+#----------------------------------------------------
+# Firewall rules
+#----------------------------------------------------
+sudo apt install  -y iptables iptables-persistent
+wget https://raw.githubusercontent.com/hrmuwanika/kamailio-from-source/master/iptables.sh
+chmod +x iptables.sh
+./iptables.sh
+
 #--------------------------------------------------
 # Install dependencies
 #--------------------------------------------------
 echo -e "\n============= Install dependencies ================"
-sudo apt install -y gnupg2 default-mysql-server curl unzip wget git make git
+sudo apt install -y gnupg2 mariadb-server curl unzip wget git make git
 
-sudo systemctl enable mysql.service
-sudo systemctl start mysql.service
+sudo systemctl enable mariadb
+sudo systemctl start mariadb
 
 mysql_secure_installation
 
@@ -51,7 +59,8 @@ sed -i 's/# DBENGINE=MYSQL/DBENGINE=MYSQL/g' /etc/kamailio/kamctlrc
 sed -i 's/# DBHOST=localhost/DBHOST=localhost/g' /etc/kamailio/kamctlrc
 sed -i 's/# DBNAME=kamailio/DBNAME=kamailio/g' /etc/kamailio/kamctlrc
 sed -i 's/# DBRWUSER="kamailio"/DBRWUSER="kamailio"/g' /etc/kamailio/kamctlrc
-sed -i 's/# DBRWPW="kamailiorw"/DBRWPW="8)Le5~#C"/g' /etc/kamailio/kamctlrc
+sed -i 's/# DBRWPW="kamailiorw"/DBRWPW="WCo9qU</3$UPMXT"/g' /usr/local/etc/kamailio/kamctlrc
+sed -i 's/# DBROPW="kamailioro"/DBROPW="Jc[=z5+EN2'f{dK"/g' /usr/local/etc/kamailio/kamctlrc
 sed -i 's/#CHARSET="latin1"/CHARSET="latin1"/g' /etc/kamailio/kamctlrc
 
 sudo kamdbctl create
@@ -65,8 +74,10 @@ sed -i -e '7i#!define WITH_NAT\' /etc/kamailio/kamailio.cfg
 sed -i -e '8i#!define WITH_RTPENGINE\' /etc/kamailio/kamailio.cfg
 sed -i -e '9i#!define WITH_ANTIFLOOD\' /etc/kamailio/kamailio.cfg
 
-systemctl enable kamailio
-systemctl start kamailio
+sudo systemctl daemon-reload
+sudo systemctl start kamailio
+sudo systemctl stop kamailio
+sudo systemctl enable kamailio
 
 #----------------------------------------------------
 # Siremis installation
@@ -107,7 +118,7 @@ a2dissite 000-default
 
 systemctl reload apache2
 
-mysql -u root -p --execute="GRANT ALL PRIVILEGES ON siremis.* TO siremis@localhost IDENTIFIED BY '8)Le5~#C'; FLUSH PRIVILEGES;"
+mysql -u root -p --execute="GRANT ALL PRIVILEGES ON siremis.* TO siremis@localhost IDENTIFIED BY 'WCo9qU</3$UPMXT'; FLUSH PRIVILEGES;"
 
 #------------------------------------------------------
 # Install Letsencrypt

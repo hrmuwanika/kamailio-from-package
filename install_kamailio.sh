@@ -46,8 +46,8 @@ echo "set mouse-=a" >> ~/.vimrc
 wget -O- http://deb.kamailio.org/kamailiodebkey.gpg | sudo apt-key add -
 
 sudo tee /etc/apt/sources.list.d/kamailio.list<<EOF
-deb http://deb.kamailio.org/kamailio55 buster main
-deb-src http://deb.kamailio.org/kamailio55 buster main
+deb http://deb.kamailio.org/kamailio54 buster main
+deb-src http://deb.kamailio.org/kamailio54 buster main
 EOF
 
 sudo apt update

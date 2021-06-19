@@ -1,7 +1,26 @@
 #!/bin/bash
+
+################################################################################
+# Script for installing Kamailio installation on Debian Buster
+# Authors: Henry Robert Muwanika
 #
-# Kamailio installation on Debian Buster
+#-------------------------------------------------------------------------------
+# Make a new file:
+# sudo nano install_kamailio.sh
+# Place this content in it and then make the file executable:
+# sudo chmod +x install_kamailio.sh
+# Execute the script to install Kamailio:
+# ./install_kamailio.sh
+################################################################################
 #
+# Set to "True" to install certbot and have ssl enabled, "False" to use http
+ENABLE_SSL="True"
+# Set the website name
+WEBSITE_NAME="example.com"
+# Provide Email to register ssl certificate
+ADMIN_EMAIL="odoo@example.com"
+## 
+
 #----------------------------------------------------
 # Disable password authentication
 #----------------------------------------------------
@@ -119,14 +138,24 @@ systemctl reload apache2
 
 mysql -u root -p --execute="GRANT ALL PRIVILEGES ON siremis.* TO siremis@localhost IDENTIFIED BY '8)Le5~#C'; FLUSH PRIVILEGES;"
 
-#------------------------------------------------------
-# Install Letsencrypt
-#------------------------------------------------------
-sudo apt install snapd -y
-sudo snap install core
-sudo snap refresh core
-sudo snap install --classic certbot
-sudo ln -s /snap/bin/certbot /usr/bin/certbot
-sudo certbot --apache -d vps.rw 
+#--------------------------------------------------
+# Enable ssl with certbot
+#--------------------------------------------------
+
+if [ $ENABLE_SSL = "True" ] && [ $ADMIN_EMAIL != "odoo@example.com" ]  && [ $WEBSITE_NAME != "example.com" ];then
+  sudo apt install snapd -y
+  sudo apt-get remove certbot
+  
+  sudo snap install core
+  sudo snap refresh core
+  sudo snap install --classic certbot
+  sudo ln -s /snap/bin/certbot /usr/bin/certbot
+  sudo certbot --apache -d $WEBSITE_NAME --noninteractive --agree-tos --email $ADMIN_EMAIL --redirect
+  sudo systemctl reload apache2
+  
+  echo "\n============ SSL/HTTPS is enabled! ========================"
+else
+  echo "\n==== SSL/HTTPS isn't enabled due to choice of the user or because of a misconfiguration! ======"
+fi
 
 echo -e "Access siremis on http://ipaddress/siremis/install"

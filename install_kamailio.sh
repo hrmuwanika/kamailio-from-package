@@ -21,6 +21,13 @@ WEBSITE_NAME="example.com"
 ADMIN_EMAIL="odoo@example.com"
 ## 
 
+#--------------------------------------------------
+# Set up the timezones
+#--------------------------------------------------
+# set the correct timezone on ubuntu
+timedatectl set-timezone Africa/Kigali
+timedatectl
+
 #----------------------------------------------------
 # Disable password authentication
 #----------------------------------------------------
@@ -49,15 +56,19 @@ chmod +x iptables.sh
 # Install dependencies
 #--------------------------------------------------
 echo -e "\n============= Install dependencies ================"
-sudo apt install -y gnupg2 mariadb-server curl unzip wget git make git
+sudo apt install -y gnupg2 curl unzip wget git make git vim
+echo "set mouse-=a" >> ~/.vimrc
+
+sudo apt install -y software-properties-common dirmngr
+sudo apt-key adv --fetch-keys 'https://mariadb.org/mariadb_release_signing_key.asc'
+sudo add-apt-repository 'deb [arch=amd64,arm64,ppc64el] https://mariadb.mirror.liquidtelecom.com/repo/10.5/debian buster main'
+sudo apt update
+sudo apt install -y mariadb-server mariadb-client
 
 sudo systemctl enable mariadb
 sudo systemctl start mariadb
 
 mysql_secure_installation
-
-sudo apt install -y vim
-echo "set mouse-=a" >> ~/.vimrc
 
 #-----------------------------------------------
 # Kamailio repository
@@ -73,7 +84,7 @@ sudo apt update
 sudo apt upgrade -y
 sudo apt install -y kamailio kamailio-mysql-modules kamailio-websocket-modules kamailio-tls-modules kamailio-presence-modules
 
-sed -i 's/# SIP_DOMAIN=kamailio.org/SIP_DOMAIN=vps.rw/g' /etc/kamailio/kamctlrc
+sed -i 's/# SIP_DOMAIN=kamailio.org/SIP_DOMAIN=$WEBSITE_NAME/g' /etc/kamailio/kamctlrc
 sed -i 's/# DBENGINE=MYSQL/DBENGINE=MYSQL/g' /etc/kamailio/kamctlrc
 sed -i 's/# DBHOST=localhost/DBHOST=localhost/g' /etc/kamailio/kamctlrc
 sed -i 's/# DBNAME=kamailio/DBNAME=kamailio/g' /etc/kamailio/kamctlrc
@@ -88,9 +99,12 @@ sed -i -e '3i#!define WITH_AUTH\' /etc/kamailio/kamailio.cfg
 sed -i -e '4i#!define WITH_IPAUTH\' /etc/kamailio/kamailio.cfg
 sed -i -e '5i#!define WITH_USRLOCDB\' /etc/kamailio/kamailio.cfg
 sed -i -e '6i#!define WITH_MULTIDOMAIN\' /etc/kamailio/kamailio.cfg
-sed -i -e '7i#!define WITH_NAT\' /etc/kamailio/kamailio.cfg
-sed -i -e '8i#!define WITH_RTPENGINE\' /etc/kamailio/kamailio.cfg
-sed -i -e '9i#!define WITH_ANTIFLOOD\' /etc/kamailio/kamailio.cfg
+sed -i -e '7i#!define WITH_ALIASDB\' /etc/kamailio/kamailio.cfg
+sed -i -e '8i#!define WITH_NAT\' /etc/kamailio/kamailio.cfg
+sed -i -e '9i#!define WITH_RTPENGINE\' /etc/kamailio/kamailio.cfg
+sed -i -e '10i#!define WITH_ANTIFLOOD\' /etc/kamailio/kamailio.cfg
+sed -i -e '11i#!define WITH_ACCDB\' /etc/kamailio/kamailio.cfg
+sed -i -e '12i##!define WITH_TLS\' /etc/kamailio/kamailio.cfg
 
 sudo systemctl daemon-reload
 sudo systemctl start kamailio
@@ -100,12 +114,12 @@ sudo systemctl enable kamailio
 #----------------------------------------------------
 # Siremis installation
 #----------------------------------------------------
-sudo apt install -y apache2 apache2-utils 
-sudo systemctl enable apache2 
-
-sudo apt install -y php php-mysql php-gd php-curl php-xml php-xmlrpc php-pear libapache2-mod-php unzip wget
-
+sudo apt install -y apache2 
 sudo a2enmod rewrite
+
+sudo apt install -y php php-mysql php-gd php-curl php-xml libapache2-mod-php php-pear unzip wget make
+a2enmod php7.3
+
 sudo systemctl restart apache2
 
 sudo sed -i s/"memory_limit = 128M"/"memory_limit = 512M"/g /etc/php/7.3/apache2/php.ini
@@ -116,6 +130,7 @@ sudo sed -i s/"max_execution_time = 30"/"max_execution_time = 360"/g /etc/php/7.
 cd /usr/src
 wget http://pear.php.net/get/XML_RPC-1.5.5.tgz
 pear upgrade XML_RPC-1.5.5.tgz
+
 sudo systemctl restart apache2
 
 #----------------------------------------------------
@@ -131,12 +146,14 @@ make apache24-conf >> /etc/apache2/sites-available/siremis.conf
 make prepare24
 make chown
 
+sudo sed -i s/"#ServerName www.example.com"/"ServerName $WEBSITE_NAME"/g /etc/apache2/sites-available/siremis.conf
+
 a2ensite siremis
 a2dissite 000-default
 
 systemctl reload apache2
 
-mysql -u root -p --execute="GRANT ALL PRIVILEGES ON siremis.* TO siremis@localhost IDENTIFIED BY '8)Le5~#C'; FLUSH PRIVILEGES;"
+mysql -u root -p --execute="GRANT ALL PRIVILEGES ON siremis.* TO siremis@localhost IDENTIFIED BY 'siremisrw'; FLUSH PRIVILEGES;"
 
 #--------------------------------------------------
 # Enable ssl with certbot

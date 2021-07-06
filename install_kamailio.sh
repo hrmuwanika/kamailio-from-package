@@ -18,8 +18,16 @@ ENABLE_SSL="True"
 # Set the website name
 WEBSITE_NAME="example.com"
 # Provide Email to register ssl certificate
-ADMIN_EMAIL="odoo@example.com"
+ADMIN_EMAIL="kamailio@example.com"
 ## 
+
+#--------------------------------------------------
+# Update Server
+#--------------------------------------------------
+echo -e "\n============= Update Server ================"
+sudo apt update
+sudo apt upgrade -y
+sudo apt autoremove -y
 
 #--------------------------------------------------
 # Set up the timezones
@@ -36,13 +44,10 @@ sudo sed -i 's/UsePAM yes/UsePAM no/' /etc/ssh/sshd_config
 sudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
 sudo service sshd restart
 
-#--------------------------------------------------
-# Update Server
-#--------------------------------------------------
-echo -e "\n============= Update Server ================"
-sudo apt update
-sudo apt upgrade -y
-sudo apt autoremove -y
+#----------------------------------------------------
+# Set hostname
+#----------------------------------------------------
+sudo hostnamectl set-hostname 
 
 #----------------------------------------------------
 # Firewall rules

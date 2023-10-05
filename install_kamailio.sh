@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ################################################################################
-# Script for installing Kamailio installation on Debian Buster
+# Script for installing Kamailio installation on Debian Bullseye
 # Authors: Henry Robert Muwanika
 #
 #-------------------------------------------------------------------------------
@@ -61,12 +61,11 @@ chmod +x iptables.sh
 # Install dependencies
 #--------------------------------------------------
 echo -e "\n============= Install dependencies ================"
-sudo apt install -y gnupg2 curl unzip wget git make git vim
-echo "set mouse-=a" >> ~/.vimrc
+sudo apt install -y gnupg2 curl unzip wget git make git nano
 
 sudo apt install -y software-properties-common dirmngr
 sudo apt-key adv --fetch-keys 'https://mariadb.org/mariadb_release_signing_key.asc'
-sudo add-apt-repository 'deb [arch=amd64,arm64,ppc64el] https://mariadb.mirror.liquidtelecom.com/repo/10.5/debian buster main'
+sudo add-apt-repository 'deb [arch=amd64,arm64,ppc64el] https://mariadb.mirror.liquidtelecom.com/repo/10.6/debian bullseye main'
 sudo apt update
 sudo apt install -y mariadb-server mariadb-client
 
@@ -81,8 +80,8 @@ mysql_secure_installation
 wget -O- http://deb.kamailio.org/kamailiodebkey.gpg | sudo apt-key add -
 
 sudo tee /etc/apt/sources.list.d/kamailio.list<<EOF
-deb http://deb.kamailio.org/kamailio55 buster main
-deb-src http://deb.kamailio.org/kamailio55 buster main
+deb http://deb.kamailio.org/kamailio57 bullseye main
+deb-src http://deb.kamailio.org/kamailio57 bullseye main
 EOF
 
 sudo apt update
